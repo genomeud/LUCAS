@@ -1,0 +1,9 @@
+#kraken
+awk -F "|" '{if($1 ~/^>/) {print $1"|"$3"|kraken:taxid|32630"}else{print $0}}' nucleotide_fasta_protein_homolog_model.fasta > Kraken_nucleotide_fasta_protein_homolog_model.fasta
+kraken2-build --download-taxonomy --db nucleotide_fasta_protein_homolog_model
+kraken2-build --add-to-library Kraken_nucleotide_fasta_protein_homolog_model.fasta --db nucleotide_fasta_protein_homolog_model
+kraken2-build --build --threads 24 --db nucleotide_fasta_protein_homolog_model
+#bwa index
+bwa index bwtsw nucleotide_fasta_protein_homolog_model
+#dustmasker
+dustmasker -in nucleotide_fasta_protein_homolog_model.fasta -outfmt acclist | awk -F ' ' '{print $1 "\t" $(NF-1) "\t" $NF}' | sed 's/>//g' > robo_default_nucleotide_fasta_protein_homolog_model.fasta.txt
