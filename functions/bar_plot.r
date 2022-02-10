@@ -1,4 +1,4 @@
-#stacked bar plot and bar plot
+#stacked bar plot and bar plot. The bar plot in Figura 4 and Figura 5 are produced via excel.
 #option T: excel file containing ppm counts. In this example, the 10 most abundant drug class in italy divided by country. Such file is produced via the DESeq.r function and select_samples.r
 #option C: txt file containing the differential abundance analysis results. Such file is produced via the DESeq.r function.
 suppressPackageStartupMessages({
