@@ -8,6 +8,8 @@ TABLEDIR=/mnt/vol1/projects/LUCAS/JRC_result/table
 SWISSPROT=/mnt/vol1/biodb/ncbi/blastdb/2019-10-23/swissprot
 KRAKEN_DATABASE=/mnt/vol1/projects/LUCAS/test_run/database/kraken/nucleotide_fasta_protein_homolog_model
 KRAKEN=/mnt/vol1/projects/SRAome/kraken2/kraken2
+BWADATABASE=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/nucleotide_fasta_protein_homolog_model.fasta
+GFF=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/my_simple_gtf.gff
 cd $SAMPLEDIR
 for dir in $(ls -d */); do 
 #trimming to remove adapters 
@@ -58,7 +60,7 @@ done
 for dir in $(ls -d */);  do
 for f in $(ls $dir*.fq | sed -e 's/_1.fq//' -e 's/_2.fq//' | sort -u); do
  #Second alignment against CARD using BWA
- bwa mem -t 24 /mnt/vol1/projects/LUCAS/test_run/bwa_index/nucleotide_fasta_protein_homolog_model/nucleotide_fasta_protein_homolog_model.fasta $dirx${f}_1.fq $dirx${f}_2.fq | samtools view -bS - > $dirx${f}.bam;  
+ bwa mem -t 24 $BWADATABASE $dirx${f}_1.fq $dirx${f}_2.fq | samtools view -bS - > $dirx${f}.bam;  
  done;  
 #Masking of low complexity sequences
   for f in $(ls $dir*.bam); do 
@@ -69,7 +71,6 @@ for f in $(ls $dir*.fq | sed -e 's/_1.fq//' -e 's/_2.fq//' | sort -u); do
   #Reads count with htseq
    conda activate htseq
   for f in $(ls $dir*_default.bam); do 
- GFF=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/my_simple_gtf.gff
  module load tools/samtools/0.1.19; 
  samtools sort -@ 8 -n $f ${f/.bam/_sortname}; 
  NAMEBAM=${f/.bam/_sortname}.bam; 
