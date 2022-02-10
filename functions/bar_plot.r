@@ -1,5 +1,6 @@
 #stacked bar plot and bar plot
-
+#option T: excel file containing ppm counts. In this example, the 10 most abundant drug class in italy divided by country. Such file is produced via the DESeq.r function and select_samples.r
+#option C: txt file containing the differential abundance analysis results. Such file is produced via the DESeq.r function.
 suppressPackageStartupMessages({
   library(optparse)
 })
@@ -44,10 +45,9 @@ cols = -Drug_Class)
 graph= ggplot(full2,aes(fill=Drug_Class, y=ppm, x=terrain)) +
 geom_bar(position="stack", stat="identity") +
 theme(axis.text.x=element_text(angle=90,margin = margin(1, unit = "cm"),vjust =1))
-ggsave("ringo.pdf",plot=graph, width = 30, units = "cm", device="pdf")
+ggsave("average.pdf",plot=graph, width = 30, units = "cm", device="pdf")
 
-browser()
-
+#function to set the first row of data as column names
 header.true <- function(df) {
 names(df) <- as.character(unlist(df[1,]))
 df[-1,]
@@ -65,4 +65,4 @@ g <- ggplot(full2, aes(x = class , y = log2FoldChange)) +
     color = "white", fill = "lightblue"
   ) +
   coord_flip()
-ggsave("averdasadge.pdf",plot=g, width = 30, units = "cm", device="pdf")
+ggsave(file=paste( comparison, ".pdf", sep=""),plot=g, width = 30, units = "cm", device="pdf")
