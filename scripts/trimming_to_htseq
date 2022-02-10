@@ -1,6 +1,8 @@
 module load compilers/gcc/5.4.0_novabreed
 module load aligners/bwa/0.7.13
 module load aligners/blast/2.6.0+
+#Function to produce the GFF file required by htseq
+Rscript faidx_to_gff.r
 DUSTMASKER=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/default_nucleotide_fasta_protein_homolog_model.fasta.txt;  
 SAMPLEDIR=/mnt/vol1/projects/LUCAS/JRC_data
 RESULTDIR=/mnt/vol1/projects/LUCAS/JRC_result
