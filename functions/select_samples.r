@@ -6,12 +6,13 @@ suppressPackageStartupMessages({
 option_list = list(
   make_option(c("-A", "--abundance"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/IT_LC_simpl_2018/ppm.txt",
               help="Input directory [default= %default]", metavar="character"),
-#  Changing --condition and --token allows to select the samples with specific metadata tags. For instance condition = "Country" and token = "Italy" allows to select only the italian samples. 
-make_option(c("-M", "--metafile"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/metadata/IT_metadata.xlsx", 
+  make_option(c("-M", "--metafile"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/metadata/IT_metadata.xlsx", 
               help="List of genes close to Vandal elements [default= %default]", metavar="character"),
-  make_option(c("-R", "--readfile"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/metadata/readpingas.txt", 
+  make_option(c("-O", "--out"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/ES_LC_simpl_2018/", 
               help="output file name [default= %default]", metavar="character"),
-   make_option(c("-C", "--condition"), type="character", default="LC_simpl_2018", 
+  make_option(c("-C", "--condition"), type="character", default="LC_simpl_2018", 
+              help="output file name [default= %default]", metavar="character"),
+  make_option(c("-V", "--value"), type="character", default="Woodland", 
               help="output file name [default= %default]", metavar="character"),
   make_option(c("-T", "--token"), type="character", default="Woodland", 
               help="output file name [default= %default]", metavar="character")
@@ -37,15 +38,9 @@ if (is.null(opt$condition)) {
   }
 
 if (is.null(opt$metafile)) {
-  stop("WARNING: No metafile specified with '-V' flag.")
+  stop("WARNING: No metafile specified with '-M' flag.")
 } else {  cat ("metafile is ", opt$metafile, "\n")
   metafile <- opt$metafile  
-  }
-
-if (is.null(opt$readfile)) {
-  stop("WARNING: No readfile specified with '-V' flag.")
-} else {  cat ("readfile is ", opt$readfile, "\n")
-  readfile <- opt$readfile  
   }
 
   if (is.null(opt$out)) {
@@ -78,7 +73,6 @@ if (is.null(opt$readfile)) {
 	bigmeta<-metadata
  	metadata<-metadata[,c("BARCODE_ID",condition)]
     metadata = lapply(metadata, subset, metadata$LC_simpl_2018 == token)
-  browser()  
  	names(metadata)[2]<-"condition"
  	rownames(countdata)<-countdata$Drug_Class
   countdata$Drug_Class = NULL
@@ -86,3 +80,4 @@ if (is.null(opt$readfile)) {
  	countdata<-countdata[,names(countdata)%in%metadata$BARCODE_ID]
   
 write.table(countdata,file=paste( token, ".txt", sep=""), row.names=F, quote=F)
+ 
