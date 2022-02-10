@@ -113,7 +113,6 @@ runDEseq<-function()
 	ddsHTSeq <- DESeqDataSetFromMatrix(countData  = countdata,
                                         colData = metadata,
                                         design= ~ condition)
- browser()
 	#Remove low abundance genes
     keep <- rowSums(counts(ddsHTSeq)) >= 5 
     ddsHTSeq<-ddsHTSeq[keep,]
