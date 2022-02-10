@@ -5,11 +5,11 @@ suppressPackageStartupMessages({
 })
 
 option_list = list(
-  make_option(c("-X", "--indexfile"), type="character", default="my_faidx.fai",
+  make_option(c("-X", "--indexfile"), type="character", default="/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/nucleotide_fasta_protein_homolog_model.fasta",
               help="Fasta index file", metavar="character"),
   make_option(c("-S", "--sourcestring"), type="character", default="ttsg",
               help="Text string indicating the source of the gene prediction", metavar="character"),
-  make_option(c("-T", "--gtffile"), type="character", default="my_simple_gtf.gff", 
+  make_option(c("-T", "--gtffile"), type="character", default="/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/my_simple_gtf.gff", 
               help="Output gtf file [default= %default]", metavar="character")
 )
 
