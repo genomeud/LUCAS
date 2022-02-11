@@ -6,7 +6,7 @@ suppressPackageStartupMessages({
 })
 
 option_list = list(
-  make_option(c("-T", "--tableppm"), type="character", default="/mnt/vol1/projects/LUCAS/functions/final10IT.xlsx", 
+  make_option(c("-T", "--tableppm"), type="character", default="/mnt/vol1/projects/LUCAS/functions/ppm_average_terrain_type.xlsx", 
               help="output file name [default= %default]", metavar="character"),
    make_option(c("-C", "--comparison"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/IT_LC_simpl_2018/LC_simpl_2018_Woodland_vs_Grassland.txt",
                help="output file name [default= %default]", metavar="character")
