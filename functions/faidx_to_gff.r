@@ -1,3 +1,4 @@
+#conversion from .fai to gff, necessary for htseq
 # Run with --help flag for help.
 suppressPackageStartupMessages({
   library(optparse)
