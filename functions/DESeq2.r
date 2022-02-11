@@ -110,7 +110,7 @@ runDEseq<-function()
 	ddsHTSeq <- DESeqDataSetFromMatrix(countData  = countdata,
                                         colData = metadata,
                                         design= ~ condition)
-	#Remove low abundance genes
+	#Remove low abundance drug classes
     keep <- rowSums(counts(ddsHTSeq)) >= 5 
     ddsHTSeq<-ddsHTSeq[keep,]
 	ddsHTSeq<-DESeq(ddsHTSeq)
@@ -143,7 +143,6 @@ runDEseq<-function()
 	pdf(paste0(outdir,"VST_PCA.pdf"))
 	#plotPCA(vsd, intgroup=c("condition"))
 	pino<-plotPCA(vsd, intgroup=c("condition"),returnData=T)
- browser()
 	pippo<-ggplot(pino, aes(x=PC1, y=PC2, color=group),size=3)+geom_point(size=3) +geom_text_repel(aes(label=name),size=4) + coord_fixed() + theme(legend.text=element_text(size=10)) +xlab(myxlab) + ylab(myylab) + scale_color_manual(values=c("Gold3", "Green", "Brown"))
 	print(pippo)
 	dev.off()
@@ -151,13 +150,14 @@ runDEseq<-function()
 	# plotDispEsts(dd_1)
 	# dev.off()
 
-	#Build heatmap based on the 50 most present genes
+	#Build heatmap 
 	newcounts<-counts(ddsHTSeq,normalized=TRUE)
 	#We don't want to use unmapped, and we set them to zero
 	newcounts=newcounts[rownames(newcounts)!="Unmapped",]
 	keepme <- order(rowMeans(newcounts), decreasing=TRUE)[1:min(nrow(newcounts),50)]
 	pcond<-data.frame(condition=metadata$condition,row.names=rownames(metadata))
 	pheatmap(newcounts[keepme,], cluster_rows=FALSE, annotation_col = pcond, fontsize=4, cellwidth=6, cellheight=4, filename=paste0(graphdir,"50-most-abundant-genes_clust.pdf"))
+  #Build heatmap on vsd-corrected data
   somma=rowSums(assay(vsd))
   pilo=assay(vsd)
   pilo=pilo[order(somma, decreasing = T),][1:min(nrow(pilo),50),]
