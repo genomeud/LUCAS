@@ -1,4 +1,3 @@
-#Anal
 # Run with --help flag for help.
 suppressPackageStartupMessages({
   library(optparse)
