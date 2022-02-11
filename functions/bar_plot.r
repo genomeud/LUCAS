@@ -9,7 +9,9 @@ option_list = list(
   make_option(c("-T", "--tableppm"), type="character", default="/mnt/vol1/projects/LUCAS/functions/ppm_average_terrain_type.xlsx", 
               help="output file name [default= %default]", metavar="character"),
    make_option(c("-C", "--comparison"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/IT_LC_simpl_2018/LC_simpl_2018_Woodland_vs_Grassland.txt",
-               help="output file name [default= %default]", metavar="character")
+               help="output file name [default= %default]", metavar="character"),
+  make_option(c("-O", "--outputname"), type="character", default="Woodland_vs_Grassland",
+	      help="output file name [default= %default]", metavar="character"),
 )
 
 opt_parser = OptionParser(option_list=option_list);
@@ -26,6 +28,11 @@ if (is.null(opt$comparison)) {
   stop("WARNING: No token specified with '-C' flag.")
 } else {  cat ("token is ", opt$tableppm, "\n")
   comparison <- opt$comparison  
+  }
+if (is.null(opt$outputname)) {
+  stop("WARNING: No token specified with '-=' flag.")
+} else {  cat ("token is ", opt$outputname, "\n")
+  outputname <- opt$outputname  
   }
     library(data.table)
 	library(openxlsx)
@@ -62,4 +69,4 @@ g <- ggplot(full2, aes(x = class , y = log2FoldChange)) +
     color = "white", fill = "lightblue"
   ) +
   coord_flip()
-ggsave(file=paste( comparison, ".pdf", sep=""),plot=g, width = 30, units = "cm", device="pdf")
+ggsave(file=paste( outputname, ".pdf", sep=""),plot=g, width = 30, units = "cm", device="pdf")
