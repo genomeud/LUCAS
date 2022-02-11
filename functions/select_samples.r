@@ -1,6 +1,6 @@
 #extract samples from the ppm table, produced via DESeq2.r, by selecting a variable and a specific value. 
 #--abundance : ppm table of sample collected in "italy", produced via DESeq2.r
-#--metafile : Metadata of italian sample
+#--metafile : Metadata of italian samples
 #--condition : "LC_simpl_2018", terrain type
 #--token : "Woodland", terrain that i want to select
 suppressPackageStartupMessages({
