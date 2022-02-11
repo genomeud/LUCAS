@@ -10,7 +10,7 @@ TABLEDIR=/mnt/vol1/projects/LUCAS/JRC_result/table
 SWISSPROT=/mnt/vol1/biodb/ncbi/blastdb/2019-10-23/swissprot
 KRAKEN_DATABASE=/mnt/vol1/projects/LUCAS/test_run/database/kraken/nucleotide_fasta_protein_homolog_model
 KRAKEN=/mnt/vol1/projects/SRAome/kraken2/kraken2
-BWADATABASE= /mnt/vol1/projects/LUCAS/test_run/bwa_index/nucleotide_fasta_protein_homolog_model/nucleotide_fasta_protein_homolog_model.fasta
+BWADATABASE=/mnt/vol1/projects/LUCAS/test_run/bwa_index/nucleotide_fasta_protein_homolog_model/nucleotide_fasta_protein_homolog_model.fasta
 GFF=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/my_simple_gtf.gff
 cd $SAMPLEDIR
 for dir in $(ls -d */); do 
