@@ -1,5 +1,4 @@
 # Run with --help flag for help.
-# Modified 02/05/2018 by Fabio Marroni
 suppressPackageStartupMessages({
   library(optparse)
 })
