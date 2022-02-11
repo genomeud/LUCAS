@@ -102,6 +102,7 @@ done
  done
  cd $TABLEDIR
  for f in $(ls *ID*); do
- join id.txt $f > yo
- mv yo id.txt
+ join id.txt $f > tmp
+ mv tmp id.txt
  done
+ #information about drug class targeted and mechanism of each ARO are manually added to id.txt
