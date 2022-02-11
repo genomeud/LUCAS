@@ -8,16 +8,15 @@ suppressPackageStartupMessages({
 option_list = list(
   make_option(c("-T", "--tableppm"), type="character", default="/mnt/vol1/projects/LUCAS/functions/ppm_average_terrain_type.xlsx", 
               help="output file name [default= %default]", metavar="character"),
-   make_option(c("-C", "--comparison"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/IT_LC_simpl_2018/LC_simpl_2018_Woodland_vs_Grassland.txt",
+   make_option(c("-C", "--comparison"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/IT_LC_simpl_2018/LC_simpl_2018_Woodland_vs_Cropland.txt",
                help="output file name [default= %default]", metavar="character"),
-  make_option(c("-O", "--outputname"), type="character", default="Woodland_vs_Grassland",
-	      help="output file name [default= %default]", metavar="character"),
+  make_option(c("-O", "--outputname"), type="character", default="Woodland_vs_Cropland",
+	      help="output file name [default= %default]", metavar="character")
 )
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
-#print("USATE: $ 01_small_RNA.r -I input dir/ -O summarized output file")
 
   if (is.null(opt$tableppm)) {
   stop("WARNING: No token specified with '-T' flag.")
@@ -62,11 +61,11 @@ full2=read.table(comparison)
 full2=header.true(full2)
 full2 = subset(full2, padj < 0.05)
 full2$stat=full2$padj=full2$lfcSE=full2$pvalue=full2$baseMean=NULL
-full2$padj= as.numeric(as.character(full2$log2FoldChange))
+full2$log2FoldChange= as.numeric(as.character(full2$log2FoldChange))
 g <- ggplot(full2, aes(x = class , y = log2FoldChange)) +
   geom_bar(
     stat = "identity", position = position_stack(),
     color = "white", fill = "lightblue"
   ) +
   coord_flip()
-ggsave(file=paste( outputname, ".pdf", sep=""),plot=g, width = 30, units = "cm", device="pdf")
+ggsave(file=paste(outputname, ".pdf", sep=""),plot=g, width = 30, units = "cm", device="pdf")
