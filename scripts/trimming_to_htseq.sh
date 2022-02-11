@@ -59,7 +59,6 @@ for dir in $(ls -d */);  do
 for f in $(ls $dir*_merged.fq.gz | sed -e 's/_1_merged.fq.gz//' -e 's/_2_merged.fq.gz//' | sort -u);  do   
 $KRAKEN -t 32 --db $KRAKEN_DATABASE --paired --classified-out $dirx${f}_merged#.fq ${f}_1_merged.fq.gz ${f}_2_merged.fq.gz > ${f}.txt 
 done
-for dir in $(ls -d */);  do
 for f in $(ls $dir*.fq | sed -e 's/_1.fq//' -e 's/_2.fq//' | sort -u); do
  #Second alignment against CARD using BWA
  bwa mem -t 24 $BWADATABASE $dirx${f}_1.fq $dirx${f}_2.fq | samtools view -bS - > $dirx${f}.bam;  
