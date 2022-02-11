@@ -2,6 +2,7 @@ DATABASE=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/nucleotide_fas
 DATABASENAME=nucleotide_fasta_protein_homolog_model
 #kraken, we need to add a dummy "taxid" to every database entry 
 awk -F "|" '{if($1 ~/^>/) {print $1"|"$3"|kraken:taxid|32630"}else{print $0}}' $DATABASE > ${DATABASENAME}_kraken.fasta
+#creation of custom kraken database
 kraken2-build --download-taxonomy --db $DATABASENAME
 kraken2-build --add-to-library ${DATABASE%.*}_kraken.fasta --db $DATABASENAME
 kraken2-build --build --threads 24 --db $DATABASENAME
