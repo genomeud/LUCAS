@@ -11,7 +11,7 @@ for file in $(ls *land); do awk '{sum = 0; for (i = 2; i <= NF; i++) sum += $i; 
 join Cropland_average.txt Woodland_average.txt > tmp
 join tmp Grassland_average.txt > tmp2
 #Calculate the average of every row and select the 10 most abundant drug classes
-awk '{sum = 0; for (i = 2; i <= NF; i++) sum += $i; sum /= (NF-1); print$0 " "  sum}' tmp2 | sort -n -k 4 -r | awk '{print $1 " " $2 " " $3 " " $4} NR==10{exit}' > final
+awk '{sum = 0; for (i = 2; i <= NF; i++) sum += $i; sum /= (NF-1); print$0 " "  sum}' tmp2 | sort -n -k 4 -r | awk '{print $1 " " $2 " " $3 " " $4} NR==10{exit}' > ppm_average_terrain_type.txt
 sed -i '1 i\Drug_Class Cropland Woodland Grassland' ppm_average_terrain_type.txt
 #produce stacked bar plot of drug class in italy grouped by country and plot the Log2FoldChange
 Rscript bar_plot.r
