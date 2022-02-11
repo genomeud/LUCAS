@@ -8,17 +8,11 @@ option_list = list(
               help="Input directory [default= %default]", metavar="character"),
   make_option(c("-M", "--metafile"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/metadata/IT_metadata.xlsx", 
               help="List of genes close to Vandal elements [default= %default]", metavar="character"),
-  make_option(c("-O", "--out"), type="character", default="/mnt/vol1/projects/LUCAS/JRC_result/DESeq2/ES_LC_simpl_2018/", 
-              help="output file name [default= %default]", metavar="character"),
   make_option(c("-C", "--condition"), type="character", default="LC_simpl_2018", 
-              help="output file name [default= %default]", metavar="character"),
-  make_option(c("-V", "--value"), type="character", default="Woodland", 
               help="output file name [default= %default]", metavar="character"),
   make_option(c("-T", "--token"), type="character", default="Woodland", 
               help="output file name [default= %default]", metavar="character")
-  # make_option(c("-R", "--raw_counts"), type="character", default=NULL,
-              # help="raw (total) read counts for this starting file", metavar="character")
-)
+
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
@@ -26,7 +20,7 @@ opt = parse_args(opt_parser);
 #print("USATE: $ 01_small_RNA.r -I input dir/ -O summarized output file")
 
 if (is.null(opt$abundance)) {
-  stop("WARNING: No abundance specified with '-I' flag.")
+  stop("WARNING: No abundance specified with '-A' flag.")
 } else {  cat ("abundance is ", opt$abundance, "\n")
   abundance <- opt$abundance  
   }
@@ -41,13 +35,6 @@ if (is.null(opt$metafile)) {
   stop("WARNING: No metafile specified with '-M' flag.")
 } else {  cat ("metafile is ", opt$metafile, "\n")
   metafile <- opt$metafile  
-  }
-
-  if (is.null(opt$out)) {
-  stop("WARNING: No input directory specified with '-I' flag.")
-} else {  cat ("Output dir is ", opt$out, "\n")
-  outdir <- opt$out  
-  #setwd(wd_location)  
   }
 
   if (is.null(opt$token)) {
@@ -66,18 +53,13 @@ if (is.null(opt$metafile)) {
   metadata<-read.xlsx(metafile)
 	countdata<-fread(abundance,data.table=F)
 	metadata$BARCODE_ID<-paste0("L",metadata$BARCODE_ID)
-
-	#Condition based on soil type: LC_simpl_2018
-	#No covariates
-	#We store bigmeta in memory for later re-use
-	bigmeta<-metadata
  	metadata<-metadata[,c("BARCODE_ID",condition)]
     metadata = lapply(metadata, subset, metadata$LC_simpl_2018 == token)
  	names(metadata)[2]<-"condition"
  	rownames(countdata)<-countdata$Drug_Class
   countdata$Drug_Class = NULL
   #keep only the samples present in metadata
- 	countdata<-countdata[,names(countdata)%in%metadata$BARCODE_ID]
+countdata<-countdata[,names(countdata)%in%metadata$BARCODE_ID]
   
 write.table(countdata,file=paste( token, ".txt", sep=""), row.names=F, quote=F)
  
