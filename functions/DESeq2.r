@@ -1,3 +1,4 @@
+#
 # Run with --help flag for help.
 # Modified 12/30/2018 by Fabio Marroni
 suppressPackageStartupMessages({
@@ -63,10 +64,6 @@ if (is.null(opt$readfile)) {
   graphdir <- opt$graphdir  
   }
 
-#Todo:
-#1) PCA with labelsfor sample (ggplot repel, or base R)
-#2) heatmap of the top 25/50 species for each comparison (top= most expressed or most differentially expressed) 
-#3) Correlation (or network?) between genes and physical/chemical parameters
 runDEseq<-function() 
 {
     library(DESeq2)
@@ -89,7 +86,7 @@ runDEseq<-function()
 	rownames(countdata)<-countdata$Drug_class
 	countdata$Drug_class<-NULL
 	readcount<-fread(readfile,data.table=F)
- #keep only the samples present in metadata
+ #keep only the samples present in metadata, this allow to input, for instance, only the samples tagged as "italy" in the metadata and perform the analysis only on those samples
   readcount<-readcount[readcount$V1%in%metadata$BARCODE_ID,]
 	countdata<-countdata[,names(countdata)%in%metadata$BARCODE_ID]
 	metadata<-metadata[metadata$BARCODE_ID%in%metadata$BARCODE_ID,]
