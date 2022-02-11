@@ -28,12 +28,9 @@ if (is.null(opt$comparison)) {
   comparison <- opt$comparison  
   }
     library(data.table)
-	library(ape)
 	library(openxlsx)
 	library("RColorBrewer")
-	library("pheatmap")
 	library("ggplot2")
-	library("ggrepel")
  library(tidyr)
 #stacked bar plot
 full2=read.xlsx(tableppm)
