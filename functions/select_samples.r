@@ -12,12 +12,10 @@ option_list = list(
               help="output file name [default= %default]", metavar="character"),
   make_option(c("-T", "--token"), type="character", default="Woodland", 
               help="output file name [default= %default]", metavar="character")
-
+)
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
-
-#print("USATE: $ 01_small_RNA.r -I input dir/ -O summarized output file")
 
 if (is.null(opt$abundance)) {
   stop("WARNING: No abundance specified with '-A' flag.")
