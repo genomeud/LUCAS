@@ -1,4 +1,4 @@
-#stacked bar plot and bar plot. The bar plot in Figura 4 and Figura 5 are produced via excel.
+#stacked bar plot and bar plot.
 #option T: excel file containing ppm counts. In this example, the 10 most abundant drug class in italy divided by country. Such file is produced via the DESeq.r function and select_samples.r
 #option C: txt file containing the differential abundance analysis results. Such file is produced via the DESeq.r function.
 suppressPackageStartupMessages({
@@ -35,7 +35,7 @@ if (is.null(opt$comparison)) {
 	library("ggplot2")
 	library("ggrepel")
  library(tidyr)
-
+#stacked bar plot
 full2=read.xlsx(tableppm)
 full2 <- full2 %>%
 pivot_longer(names_to = "terrain",
@@ -53,7 +53,7 @@ names(df) <- as.character(unlist(df[1,]))
 df[-1,]
 }
 
-
+#bar plot
 full2=read.table(comparison)
 full2=header.true(full2)
 full2 = subset(full2, padj < 0.05)
