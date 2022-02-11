@@ -1,5 +1,4 @@
-# Run with --help flag for help.
-# Modified 12/30/2018 by Fabio Marroni
+#Group each ARO by the drug class targeted
 suppressPackageStartupMessages({
   library(optparse)
 })
