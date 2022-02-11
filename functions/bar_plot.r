@@ -29,7 +29,7 @@ if (is.null(opt$comparison)) {
   comparison <- opt$comparison  
   }
 if (is.null(opt$outputname)) {
-  stop("WARNING: No token specified with '-=' flag.")
+  stop("WARNING: No token specified with '-O' flag.")
 } else {  cat ("token is ", opt$outputname, "\n")
   outputname <- opt$outputname  
   }
