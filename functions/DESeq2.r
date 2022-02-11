@@ -1,6 +1,5 @@
-#
+#Anal
 # Run with --help flag for help.
-# Modified 12/30/2018 by Fabio Marroni
 suppressPackageStartupMessages({
   library(optparse)
 })
