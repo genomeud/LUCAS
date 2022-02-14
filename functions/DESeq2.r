@@ -91,8 +91,8 @@ runDEseq<-function()
 	rownames(metadata)<-metadata$BARCODE_ID
 	#Add (unmapped) read counts to the count table (needed to normalize)
 	#Trick to sort the read counts in the same order of the gene counts based on sample names
-	ciccio<-match(names(countdata),readcount[,1])
-	sreadcount<-readcount[ciccio,]
+	mc<-match(names(countdata),readcount[,1])
+	sreadcount<-readcount[mc,]
 	tcount<-sreadcount[,2]
 	totmapped<-apply(countdata,2,sum)
 	unmapped<-tcount-totmapped
@@ -140,9 +140,9 @@ runDEseq<-function()
 
 	pdf(paste0(outdir,"VST_PCA.pdf"))
 	#plotPCA(vsd, intgroup=c("condition"))
-	pino<-plotPCA(vsd, intgroup=c("condition"),returnData=T)
-	pippo<-ggplot(pino, aes(x=PC1, y=PC2, color=group),size=3)+geom_point(size=3) +geom_text_repel(aes(label=name),size=4) + coord_fixed() + theme(legend.text=element_text(size=10)) +xlab(myxlab) + ylab(myylab) + scale_color_manual(values=c("Gold3", "Green", "Brown"))
-	print(pippo)
+	plca<-plotPCA(vsd, intgroup=c("condition"),returnData=T)
+	graph<-ggplot(plca, aes(x=PC1, y=PC2, color=group),size=3)+geom_point(size=3) +geom_text_repel(aes(label=name),size=4) + coord_fixed() + theme(legend.text=element_text(size=10)) +xlab(myxlab) + ylab(myylab) + scale_color_manual(values=c("Gold3", "Green", "Brown"))
+	print(graph)
 	dev.off()
 	# pdf("dispersion_fit.pdf")
 	# plotDispEsts(dd_1)
@@ -157,14 +157,13 @@ runDEseq<-function()
 	pheatmap(newcounts[keepme,], cluster_rows=FALSE, annotation_col = pcond, fontsize=4, cellwidth=6, cellheight=4, filename=paste0(graphdir,"50-most-abundant-genes_clust.pdf"))
   #Build heatmap on vsd-corrected data
   somma=rowSums(assay(vsd))
-  pilo=assay(vsd)
-  pilo=pilo[order(somma, decreasing = T),][1:min(nrow(pilo),50),]
-  browser()
-  pcond_color=pcond
+  mapvsd=assay(vsd)
+  mapvsd=mapvsd[order(somma, decreasing = T),][1:min(nrow(mapvsd),50),]
+    pcond_color=pcond
   pcond_color$condition=as.factor(pcond$condition)
   ann_colors <- list(condition = c(Cropland = "Gold3",Grassland = "Green",Woodland = "Brown"))
   
-pheatmap(pilo, cluster_rows=FALSE, annotation_col = pcond_color, annotation_colors = ann_colors, fontsize=4, cellwidth=6, cellheight=4, filename=paste0(graphdir,"vsd_50-most-abundant-genes_clust.pdf"))
+pheatmap(mapvsd, cluster_rows=FALSE, annotation_col = pcond_color, annotation_colors = ann_colors, fontsize=4, cellwidth=6, cellheight=4, filename=paste0(graphdir,"vsd_50-most-abundant-genes_clust.pdf"))
 
     #dev.off()
 	#Plot distance matrix as heatmap
