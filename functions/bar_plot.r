@@ -39,13 +39,13 @@ if (is.null(opt$outputname)) {
 	library("ggplot2")
  library(tidyr)
 #stacked bar plot
-full2=read.xlsx(tableppm)
-full2 <- full2 %>%
+stacked=read.xlsx(tableppm)
+stacked <- full2 %>%
 pivot_longer(names_to = "terrain",
 values_to = "ppm",
 cols = -Drug_Class)
  
-graph= ggplot(full2,aes(fill=Drug_Class, y=ppm, x=terrain)) +
+graph= ggplot(stacked,aes(fill=Drug_Class, y=ppm, x=terrain)) +
 geom_bar(position="stack", stat="identity") +
 theme(axis.text.x=element_text(angle=90,margin = margin(1, unit = "cm"),vjust =1))
 ggsave("average.pdf",plot=graph, width = 30, units = "cm", device="pdf")
@@ -57,12 +57,12 @@ df[-1,]
 }
 
 #bar plot
-full2=read.table(comparison)
-full2=header.true(full2)
-full2 = subset(full2, padj < 0.05)
-full2$stat=full2$padj=full2$lfcSE=full2$pvalue=full2$baseMean=NULL
-full2$log2FoldChange= as.numeric(as.character(full2$log2FoldChange))
-g <- ggplot(full2, aes(x = class , y = log2FoldChange)) +
+bar=read.table(comparison)
+bar=header.true(bar)
+bar = subset(bar, padj < 0.05)
+bar$stat=bar$padj=bar$lfcSE=bar$pvalue=bar$baseMean=NULL
+bar$log2FoldChange= as.numeric(as.character(bar$log2FoldChange))
+g <- ggplot(bar, aes(x = class , y = log2FoldChange)) +
   geom_bar(
     stat = "identity", position = position_stack(),
     color = "white", fill = "lightblue"
