@@ -7,7 +7,7 @@ Rscript terrain_type.r --token="cropland"
 Rscript terrain_type.r --token="woodland"
 Rscript terrain_type.r --token="grassland"
 #Calculate the average ppm among samples of every drug class and join the terrain on a single table
-for file in $(ls *land); do awk '{sum = 0; for (i = 2; i <= NF; i++) sum += $i; sum /= (NF-1); print$0 " "  sum}' $file > outfile; awk '{print$1 " " $NF}' outfile |  awk '{if (NR!=1) {print}}' > ${file}_average.txt; done
+for file in $(ls *land*); do awk '{sum = 0; for (i = 2; i <= NF; i++) sum += $i; sum /= (NF-1); print$0 " "  sum}' $file > outfile; awk '{print$1 " " $NF}' outfile |  awk '{if (NR!=1) {print}}' > ${file%.*}_average.txt; done
 join cropland_average.txt woodland_average.txt > tmp
 join tmp grassland_average.txt > tmp2
 #Calculate the average of every row and select the 10 most abundant drug classes
