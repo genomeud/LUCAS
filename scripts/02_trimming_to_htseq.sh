@@ -3,15 +3,15 @@ module load aligners/bwa/0.7.13
 module load aligners/blast/2.6.0+
 #Function to produce the GFF file required by htseq
 Rscript faidx_to_gff.r
-DUSTMASKER=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/default_nucleotide_fasta_protein_homolog_model.fasta.txt 
+DUSTMASKER=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/complete_sensitive_nucleotide_fasta_protein_homolog_model.fasta.txt
 SAMPLEDIR=/mnt/vol1/projects/LUCAS/JRC_data
 RESULTDIR=/mnt/vol1/projects/LUCAS/JRC_result
 TABLEDIR=/mnt/vol1/projects/LUCAS/JRC_result/table
 SWISSPROT=/mnt/vol1/biodb/ncbi/blastdb/2019-10-23/swissprot
 KRAKEN_DATABASE=/mnt/vol1/projects/LUCAS/test_run/database/kraken/nucleotide_fasta_protein_homolog_model
 KRAKEN=/mnt/vol1/projects/SRAome/kraken2/kraken2
-BWADATABASE=/mnt/vol1/projects/LUCAS/test_run/bwa_index/nucleotide_fasta_protein_homolog_model/nucleotide_fasta_protein_homolog_model.fasta
-GFF=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/my_simple_gtf.gff
+BWADATABASE=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/complete_rpob/complete_sensitive
+GFF=/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/complete_sensitive_gtf.gff
 cd $SAMPLEDIR
 for dir in $(ls -d */); do 
 #trimming to remove adapters 
@@ -61,34 +61,34 @@ $KRAKEN -t 32 --db $KRAKEN_DATABASE --paired --classified-out $dirx${f}_merged#.
 done
 for f in $(ls $dir*.fq | sed -e 's/_1.fq//' -e 's/_2.fq//' | sort -u); do
  #Second alignment against CARD using BWA
- bwa mem -t 24 $BWADATABASE $dirx${f}_1.fq $dirx${f}_2.fq | samtools view -bS - > $dirx${f}.bam;  
+ bwa mem -t 24 $BWADATABASE $dirx${f}_1.fq $dirx${f}_2.fq | samtools view -bS - > $dirx${f}_complete_sensitive.bam;  
  done;  
 #Masking of low complexity sequences
-  for f in $(ls $dir*.bam); do 
+  for f in $(ls $dir*complete_sensitive.bam); do 
   conda activate samtools
   samtools view $f  -b -h -o REMOVEME -U ${f%.*}_default.bam -L $DUSTMASKER
   done
   conda deactivate 
   #Reads count with htseq
    conda activate htseq
-  for f in $(ls $dir*_default.bam); do 
+  for f in $(ls $dir*complete_sensitive_default.bam); do 
  module load tools/samtools/0.1.19; 
  samtools sort -@ 8 -n $f ${f/.bam/_sortname}; 
  NAMEBAM=${f/.bam/_sortname}.bam; 
- htseq-count -a 0 -s no $NAMEBAM $GFF > ${f%.*}_htseq.txt; 
+ htseq-count -a 0 -s no $NAMEBAM $GFF > ${f%.*}_0_htseq.txt; 
  done;
   #Editing to obtain the final tables
- for f in $(ls $dir*_htseq.txt); do
+ for f in $(ls $dir*complete_sensitive_default_0_htseq.txt); do
  awk -F '|' '{ print $5 " " $6}' $f | awk '{print $1 " " $NF}' | sort |sed '1,5d'> ${f%.*}_ID.txt
  join /mnt/vol1/projects/LUCAS/test_run/database/homolog_model/ID_novariant.txt ${f%.*}_ID.txt | sort -n -k3 -r > ${f%.*}_aro.txt
 done
 #bam to fasta and blast as quality control
-for f in $(ls $dir*_default.bam); do
+for f in $(ls $dir*complete_sensitive_default.bam); do
 samtools view $f | awk '{print $3 "\n" $10}' |  sed '1~2s/^/>/' > ${f%.*}.fasta
 conda deactivate
 done
 #blast
-for f in $(ls $dir*_default.fasta); do
+for f in $(ls $dir*complete_sensitive_default.fasta); do
  blastx -db $SWISSPROT -query $f -num_threads 24 -out ${f%.*}_blast.txt  -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore stitle' -evalue 1e-10 -num_alignments 2
 done
 done
