@@ -17,7 +17,6 @@ Rscript /mnt/vol1/projects/LUCAS/functions/select_test.r --token="Permanent_crop
 Rscript /mnt/vol1/projects/LUCAS/functions/select_test.r --token="Root_crops"
 Rscript /mnt/vol1/projects/LUCAS/functions/select_test.r --token="Spontaneously_revegetated_surfaces"
 Rscript /mnt/vol1/projects/LUCAS/functions/select_test.r --token="Others"
-Rscript /mnt/vol1/projects/LUCAS/functions/select_test.r --token="Wetland"
 #calculate the average
 for file in $(ls); do awk '{sum = 0; for (i = 2; i <= NF; i++) sum += $i; sum /= (NF-1); print$0 " "  sum}' $file > outfile; awk '{print$1 " " $NF}' outfile |  awk '{if (NR!=1) {print}}' > average/${file%.*}_average.txt; done
 cd average
