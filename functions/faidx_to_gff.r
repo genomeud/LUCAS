@@ -5,7 +5,7 @@ suppressPackageStartupMessages({
 })
 
 option_list = list(
-  make_option(c("-X", "--indexfile"), type="character", default="/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/nucleotide_fasta_protein_homolog_model.fasta",
+  make_option(c("-X", "--indexfile"), type="character", default="/mnt/vol1/projects/LUCAS/test_run/database/homolog_model/nucleotide_fasta_protein_homolog_model.fasta.fai",
               help="Fasta index file", metavar="character"),
   make_option(c("-S", "--sourcestring"), type="character", default="ttsg",
               help="Text string indicating the source of the gene prediction", metavar="character"),
