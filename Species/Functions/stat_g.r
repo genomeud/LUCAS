@@ -1,0 +1,12 @@
+#install.package("tibble")
+library(tibble)
+setwd("C:/Users/utente/Desktop/UNIVERSITA'/Tesi/Analisi/Tabelle")
+#install.packages('bit64')
+g630<-fread("reduced_raw_counts_G.txt",data.table=F)
+summary(g630)
+g630[is.na(g630)]=0
+G_summ<-as.data.frame(apply(g630[3:length(colnames(g630))],2,summary))
+row.names(G_summ)<-gsub(" ","_",row.names(G_summ))
+G_summ<- tibble::rownames_to_column(G_summ, "Stat")
+write.table(G_summ, "stat_summary_G.txt",row.names=F,quote=F)
+test<-sapply(g630,function(x) head(g630$Name [order(x, decreasing=TRUE)],10))
